@@ -1,0 +1,13 @@
+.selected {
+  color: #fff;
+}
+.selected div {
+  background-color: #3f51b5;
+}
+
+.selected:hover {
+  color: black;
+}
+.selected:hover div {
+  background-color: #ccc;
+}
