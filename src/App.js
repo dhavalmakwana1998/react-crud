@@ -128,7 +128,10 @@ function App() {
               paper: classes.drawerPaper,
             }}
           >
-            <div className={classes.drawerHeader}>
+            <div
+              className={classes.drawerHeader}
+              style={{ backgroundColor: "3f51b5" }}
+            >
               <Typography variant="h5">
                 <Link to="/" style={{ textDecoration: "none" }}>
                   Logo
