@@ -17,7 +17,9 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { BrowserRouter, Switch, Route, NavLink, Link } from "react-router-dom";
-import User from "./User";
+import User from "./component/User";
+import UserView from "./component/UserView";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -176,6 +178,7 @@ function App() {
                 }}
               />
               <Route exact path="/user" component={User} />
+              <Route exact path="/user/:id" component={UserView} />
               <Route
                 render={() => {
                   return <h1 align="center">404 Not Found</h1>;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -17,6 +18,8 @@ import {
 import ClearIcon from "@material-ui/icons/Clear";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import ViewUser from "./UserView";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -116,6 +119,11 @@ function User() {
                     <TableCell>{row.address.city}</TableCell>
                     <TableCell>{row.address.zipcode}</TableCell>
                     <TableCell>
+                      <IconButton>
+                        <Link to={`/user/${row.id}`}>
+                          <VisibilityIcon color="primary" />
+                        </Link>
+                      </IconButton>
                       <IconButton>
                         <Edit style={{ color: "#ff9800" }} />
                       </IconButton>
