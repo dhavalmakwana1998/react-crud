@@ -78,6 +78,10 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     minWidth: "30px",
   },
+  bgPrimary: {
+    backgroundColor: "#3f51b5",
+    color: "#FFF",
+  },
 }));
 
 function App() {
@@ -128,16 +132,13 @@ function App() {
               paper: classes.drawerPaper,
             }}
           >
-            <div
-              className={classes.drawerHeader}
-              style={{ backgroundColor: "3f51b5" }}
-            >
+            <div className={`${classes.bgPrimary} ${classes.drawerHeader}`}>
               <Typography variant="h5">
-                <Link to="/" style={{ textDecoration: "none" }}>
+                <Link to="/" style={{ color: "#FFF", textDecoration: "none" }}>
                   Logo
                 </Link>
               </Typography>
-              <IconButton onClick={handleDrawerClose}>
+              <IconButton style={{ color: "#FFF" }} onClick={handleDrawerClose}>
                 {theme.direction === "ltr" ? (
                   <ChevronLeftIcon />
                 ) : (
@@ -146,7 +147,7 @@ function App() {
               </IconButton>
             </div>
             <Divider />
-            <List>
+            <List disablePadding>
               <NavLink
                 activeClassName="selected"
                 style={{ textDecoration: "none" }}
@@ -175,6 +176,11 @@ function App() {
                 }}
               />
               <Route exact path="/user" component={User} />
+              <Route
+                render={() => {
+                  return <h1 align="center">404 Not Found</h1>;
+                }}
+              />
             </Switch>
           </main>
         </div>
