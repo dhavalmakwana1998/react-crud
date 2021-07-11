@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BrowserRouter, Switch, Route, NavLink, Link } from "react-router-dom";
 import "./App.css";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -16,9 +17,10 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { BrowserRouter, Switch, Route, NavLink, Link } from "react-router-dom";
+
 import User from "./component/User";
 import UserView from "./component/UserView";
+import UserAdd from "./component/UserAdd";
 
 const drawerWidth = 240;
 
@@ -170,14 +172,9 @@ function App() {
           >
             <div className={classes.drawerHeader} />
             <Switch>
-              <Route
-                exact
-                path="/"
-                render={() => {
-                  return <h1 align="center">Welcome to ReactJs Crud</h1>;
-                }}
-              />
+              <Route exact path="/" component={User} />
               <Route exact path="/user" component={User} />
+              <Route exact path="/user/add" component={UserAdd} />
               <Route exact path="/user/:id" component={UserView} />
               <Route
                 render={() => {
