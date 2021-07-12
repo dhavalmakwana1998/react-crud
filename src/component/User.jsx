@@ -8,6 +8,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import SkeletonTable from "../skeleton/SkeletonTable";
 import {
   TablePagination,
   Box,
@@ -27,6 +28,7 @@ import Delete from "@material-ui/icons/Delete";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import AddIcon from "@material-ui/icons/Add";
 import axios from "axios";
+import packageJson from "../../package.json";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -55,17 +57,17 @@ function User() {
   const [rowsPerPage, setRowsPerPage] = useState(3);
 
   const loadUser = async () => {
-    const res = await axios.get(
-      "https://my-json-server.typicode.com/dhavalmakwana1998/crud/users/"
-    );
-    setUsers(res.data.reverse());
+    const res = await axios.get(packageJson.apiUrl);
+
+    const user = res.data.reverse();
+    setTimeout(() => {
+      setUsers(user);
+    }, 3000);
   };
 
   const deleteUser = async (id) => {
     setOpen(false);
-    const res = await axios.delete(
-      `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users/${id}`
-    );
+    const res = await axios.delete(packageJson.apiUrl + id);
     setConfirmdDeleteId(null);
     loadUser();
   };
@@ -87,77 +89,74 @@ function User() {
     loadUser();
   }, []);
 
-  // function handleSearch(e) {
-  //   setSearchText(e.target.value);
-  //   const filtered = users.filter((row) => {
-  //     return row.name.includes(searchText);
-  //   });
-  //   setUsers(filtered);
-  // }
-
   const classes = useStyles();
   return (
     <>
-      <Grid container>
-        <Grid container spacing={3} style={{ marginBottom: "6px" }}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="h4">Users</Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box align="right">
-              <Link to="/user/add">
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                >
-                  Add User
-                </Button>
-              </Link>
-            </Box>
-          </Grid>
-        </Grid>
-        <Dialog
-          open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={() => {
-            setOpen(false);
-          }}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle style={{ color: "red" }} id="alert-dialog-slide-title">
-            {"Are you sure you want to delete this record?"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText
-              color="secondary"
-              id="alert-dialog-slide-description"
-            >
-              Record will be deleted permanet..!
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
+      {users.length ? (
+        <div>
+          <Grid container>
+            <Grid container spacing={3} style={{ marginBottom: "6px" }}>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="h4">Users</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Box align="right">
+                  <Link to="/user/add">
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      startIcon={<AddIcon />}
+                    >
+                      Add User
+                    </Button>
+                  </Link>
+                </Box>
+              </Grid>
+            </Grid>
+            <Dialog
+              open={open}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={() => {
                 setOpen(false);
               }}
-              color="primary"
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
             >
-              Disagree
-            </Button>
-            <Button
-              onClick={() => {
-                deleteUser(confirmDeleteId);
-              }}
-              color="secondary"
-            >
-              Agree
-            </Button>
-          </DialogActions>
-        </Dialog>
-        {/* <Box marginBottom={2} align="right">
+              <DialogTitle
+                style={{ color: "red" }}
+                id="alert-dialog-slide-title"
+              >
+                {"Are you sure you want to delete this record?"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText
+                  color="secondary"
+                  id="alert-dialog-slide-description"
+                >
+                  Record will be deleted permanet..!
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    setOpen(false);
+                  }}
+                  color="primary"
+                >
+                  Disagree
+                </Button>
+                <Button
+                  onClick={() => {
+                    deleteUser(confirmDeleteId);
+                  }}
+                  color="secondary"
+                >
+                  Agree
+                </Button>
+              </DialogActions>
+            </Dialog>
+            {/* <Box marginBottom={2} align="right">
         <TextField
           size="small"
           onChange={handleSearch}
@@ -174,75 +173,82 @@ function User() {
           }
         />
       </Box> */}
-        <TableContainer component={Paper}>
-          <Table
-            className={classes.table}
-            stickyHeader
-            aria-label="sticky table"
-          >
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center">#ID</StyledTableCell>
-                <StyledTableCell>Full Name</StyledTableCell>
-                <StyledTableCell>Userame</StyledTableCell>
-                <StyledTableCell>Email</StyledTableCell>
-                <StyledTableCell>City</StyledTableCell>
-                <StyledTableCell>Zipcode</StyledTableCell>
-                <StyledTableCell>Action</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {!users.length ? (
-                <TableRow>
-                  <TableCell rowSpan={7}>No records found</TableCell>
-                </TableRow>
-              ) : (
-                users
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, ind) => (
-                    <TableRow key={ind + 1}>
-                      <TableCell align="center" component="th" scope="row">
-                        {ind + 1}
-                      </TableCell>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.username}</TableCell>
-                      <TableCell>{row.email}</TableCell>
-                      <TableCell>{row.city}</TableCell>
-                      <TableCell>{row.phone}</TableCell>
-                      <TableCell>
-                        <IconButton>
-                          <Link to={`/user/${row.id}`}>
-                            <VisibilityIcon color="primary" />
-                          </Link>
-                        </IconButton>
-                        <IconButton>
-                          <Link to={`/user/edit/${row.id}`}>
-                            <Edit style={{ color: "#ff9800" }} />
-                          </Link>
-                        </IconButton>
-                        <IconButton onClick={() => openConfirm(row.id)}>
-                          <Delete color="secondary" />
-                        </IconButton>
-                      </TableCell>
+            <TableContainer component={Paper}>
+              <Table
+                className={classes.table}
+                stickyHeader
+                aria-label="sticky table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center">#ID</StyledTableCell>
+                    <StyledTableCell>Full Name</StyledTableCell>
+                    <StyledTableCell>Userame</StyledTableCell>
+                    <StyledTableCell>Email</StyledTableCell>
+                    <StyledTableCell>City</StyledTableCell>
+                    <StyledTableCell>Zipcode</StyledTableCell>
+                    <StyledTableCell>Action</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {!users.length ? (
+                    <TableRow>
+                      <TableCell rowSpan={7}>No records found</TableCell>
                     </TableRow>
-                  ))
-              )}
-              {!users.length ? (
-                <></>
-              ) : (
-                <TablePagination
-                  rowsPerPageOptions={[3, 5, 7, 10, 15, 20]}
-                  count={users.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Grid>
+                  ) : (
+                    users
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row, ind) => (
+                        <TableRow key={ind + 1}>
+                          <TableCell align="center" component="th" scope="row">
+                            {ind + 1}
+                          </TableCell>
+                          <TableCell>{row.name}</TableCell>
+                          <TableCell>{row.username}</TableCell>
+                          <TableCell>{row.email}</TableCell>
+                          <TableCell>{row.city}</TableCell>
+                          <TableCell>{row.phone}</TableCell>
+                          <TableCell>
+                            <IconButton>
+                              <Link to={`/user/${row.id}`}>
+                                <VisibilityIcon color="primary" />
+                              </Link>
+                            </IconButton>
+                            <IconButton>
+                              <Link to={`/user/edit/${row.id}`}>
+                                <Edit style={{ color: "#ff9800" }} />
+                              </Link>
+                            </IconButton>
+                            <IconButton onClick={() => openConfirm(row.id)}>
+                              <Delete color="secondary" />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                  )}
+                  {!users.length ? (
+                    <></>
+                  ) : (
+                    <TablePagination
+                      rowsPerPageOptions={[3, 5, 7, 10, 15, 20]}
+                      count={users.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </div>
+      ) : (
+        <SkeletonTable />
+      )}
     </>
   );
 }

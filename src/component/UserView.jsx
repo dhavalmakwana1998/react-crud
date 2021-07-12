@@ -19,6 +19,9 @@ import Slide from "@material-ui/core/Slide";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import axios from "axios";
+import packageJson from "../../package.json";
+import { Box, Grid } from "@material-ui/core";
+import Skeleton from "react-loading-skeleton";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -42,11 +45,9 @@ function UserView() {
 
   const deleteUser = async (id) => {
     setOpen(false);
-    const res = await axios.delete(
-      `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users${id}`
-    );
+    const res = await axios.delete(packageJson.apiUrl + id);
     setConfirmdDeleteId(null);
-    history.push("/");
+    history.push("/user");
   };
 
   const openConfirm = (deleteId) => {
@@ -56,10 +57,11 @@ function UserView() {
 
   useEffect(() => {
     const loadUser = async () => {
-      const res = await axios.get(
-        `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users/${id}`
-      );
-      setUsers(await res.json());
+      const res = await axios.get(packageJson.apiUrl + id);
+      const user = await res.data;
+      setTimeout(() => {
+        setUsers(user);
+      }, 1000);
     };
     loadUser();
   }, []);
@@ -67,113 +69,139 @@ function UserView() {
   const classes = useStyles();
   return (
     <>
-      <div className="container">
-        <Dialog
-          open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={() => {
-            setOpen(false);
-          }}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle style={{ color: "red" }} id="alert-dialog-slide-title">
-            {"Are you sure you want to delete this record?"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText
-              color="secondary"
-              id="alert-dialog-slide-description"
-            >
-              Record will be deleted permanet..!
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                setOpen(false);
-              }}
-              color="primary"
-            >
-              Disagree
-            </Button>
-            <Button
-              onClick={() => {
-                deleteUser(confirmDeleteId);
-              }}
-              color="secondary"
-            >
-              Agree
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Card className={classes.root}>
-          <CardActionArea>
-            <CardMedia
-              className={classes.media}
-              image="https://picsum.photos/seed/picsum/700/500"
-              title="Contemplative Reptile"
-            />
-            {user && (
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {user.name} <span>•</span> {user.username}
-                </Typography>
-                <Typography gutterBottom variant="h6" color="error">
-                  {user.email} <span>•</span> {user.website} <span>•</span>
-                  {user.phone}
-                </Typography>
-                <Typography gutterBottom variant="body1">
-                  {user.city}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {user.bio}
-                </Typography>
-              </CardContent>
-            )}
-          </CardActionArea>
-          <CardActions>
-            <Link to="/user">
-              <Button
-                size="small"
-                variant="contained"
-                startIcon={<ArrowBack />}
+      {user ? (
+        <div className="container">
+          <Dialog
+            open={open}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={() => {
+              setOpen(false);
+            }}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogTitle style={{ color: "red" }} id="alert-dialog-slide-title">
+              {"Are you sure you want to delete this record?"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText
+                color="secondary"
+                id="alert-dialog-slide-description"
               >
-                Back
-              </Button>
-            </Link>
-            <Link to="/user/add">
+                Record will be deleted permanet..!
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
               <Button
-                size="small"
-                variant="contained"
+                onClick={() => {
+                  setOpen(false);
+                }}
                 color="primary"
-                startIcon={<AddIcon />}
               >
-                Add
+                Disagree
               </Button>
-            </Link>
-            <Button
-              size="small"
-              variant="contained"
-              startIcon={<Edit />}
-              style={{ background: "#ff9800" }}
-            >
-              Edit
-            </Button>
-            <Button
-              style={{ marginLeft: "auto" }}
-              size="small"
-              variant="contained"
-              color="secondary"
-              startIcon={<Delete />}
-              onClick={() => openConfirm(user.id)}
-            >
-              Delete
-            </Button>
-          </CardActions>
-        </Card>
-      </div>
+              <Button
+                onClick={() => {
+                  deleteUser(confirmDeleteId);
+                }}
+                color="secondary"
+              >
+                Agree
+              </Button>
+            </DialogActions>
+          </Dialog>
+          {user && (
+            <Card className={classes.root}>
+              <CardActionArea>
+                <CardMedia
+                  className={classes.media}
+                  image="https://picsum.photos/seed/picsum/700/500"
+                  title="Contemplative Reptile"
+                />
+
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {user.name} <span>•</span> {user.username}
+                  </Typography>
+                  <Typography gutterBottom variant="h6" color="error">
+                    {user.email} <span>•</span> {user.website} <span>•</span>
+                    {user.phone}
+                  </Typography>
+                  <Typography gutterBottom variant="body1">
+                    {user.city}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    {user.bio}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Link to="/user">
+                  <Button
+                    size="small"
+                    variant="contained"
+                    startIcon={<ArrowBack />}
+                  >
+                    Back
+                  </Button>
+                </Link>
+                <Link to="/user/add">
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                  >
+                    Add
+                  </Button>
+                </Link>
+                <Link to={`/user/edit/` + user.id}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    startIcon={<Edit />}
+                    style={{ background: "#ff9800" }}
+                  >
+                    Edit
+                  </Button>
+                </Link>
+                <Button
+                  style={{ marginLeft: "auto" }}
+                  size="small"
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<Delete />}
+                  onClick={() => openConfirm(user.id)}
+                >
+                  Delete
+                </Button>
+              </CardActions>
+            </Card>
+          )}
+        </div>
+      ) : (
+        <Box pt={0.5} className={classes.root}>
+          <Skeleton variant="rect" width="100%" height={118} />
+          <Skeleton variant="text" height={50} />
+          <Skeleton variant="text" height={30} />
+          <Grid container>
+            <Grid item xs={2}>
+              <Skeleton width="80%" height={30} />
+            </Grid>
+
+            <Grid item sm={2}></Grid>
+            <Grid item sm={2}></Grid>
+            <Grid item sm={2}>
+              <Skeleton width="80%" height={30} alignItems="right" />
+            </Grid>
+          </Grid>
+        </Box>
+      )}
     </>
   );
 }

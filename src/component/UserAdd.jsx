@@ -12,6 +12,8 @@ import TextField from "@material-ui/core/TextField";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
+import packageJson from "../../package.json";
+import Skeleton from "react-loading-skeleton";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,11 +55,8 @@ function UserAdd() {
   };
   const onSubmitHandle = async (event) => {
     event.preventDefault();
-    const res = axios.post(
-      "https://my-json-server.typicode.com/dhavalmakwana1998/crud/users/",
-      users
-    );
-    history.push("/");
+    const res = await axios.post(packageJson.apiUrl, users);
+    history.push("/user");
   };
   return (
     <>
@@ -68,7 +67,11 @@ function UserAdd() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box align="right">
-              <Link to="/">
+              <Link
+                onClicl={() => {
+                  history.goBack();
+                }}
+              >
                 <Button
                   color="secondary"
                   variant="contained"

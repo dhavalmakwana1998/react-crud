@@ -31,34 +31,34 @@
       "bio": "Face to face bifurcated interface"
     },
     {
-      "id": 4,
-      "name": "Patricia Lebsack",
-      "username": "Karianne",
-      "email": "Julianne.OConner@kory.org",
-      "city": "South Elvis",
-      "phone": "493-170-9623 x156",
-      "website": "kale.biz",
-      "bio": "Multi-tiered zero tolerance productivity"
-    },
-    {
-      "id": 5,
-      "name": "Chelsey Dietrich",
-      "username": "Kamren",
-      "email": "Lucio_Hettinger@annie.ca",
-      "city": "Roscoeview",
-      "phone": "(254)954-1289",
-      "website": "demarco.info",
-      "bio": "User-centric fault-tolerant solution"
-    },
-    {
-      "id": 6,
-      "name": "Mrs. Dennis Schulist",
-      "username": "Leopoldo_Corkery",
-      "email": "Karley_Dach@jasper.info",
-      "city": "South Christy",
-      "phone": "1-477-935-8478 x6430",
+      "name": "Dhaval Makwana",
+      "username": "dhavalmakwana_26",
+      "email": "dhavalmakwana191@gmail.com",
+      "phone": "7600446773",
       "website": "ola.org",
-      "bio": "Synchronised bottom-line interface"
+      "city": "Amreli",
+      "bio": "Biooo",
+      "id": 4
+    },
+    {
+      "name": "Rasilaben Rameshbhai Makvana",
+      "username": "rr",
+      "email": "dr",
+      "phone": "6356525696",
+      "website": "ola.org",
+      "city": "Amreli",
+      "bio": "BBB",
+      "id": 5
+    },
+    {
+      "name": "Milan",
+      "username": "mak",
+      "email": "tesr",
+      "phone": "7600446773",
+      "website": "sdfsd",
+      "city": "Amreli",
+      "bio": "Test",
+      "id": 6
     }
   ]
 }

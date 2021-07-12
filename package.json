@@ -1,11 +1,13 @@
 {
   "name": "crud",
+  "apiUrl": "http://localhost:3001/users/",
   "homepage": "https://dhavalmakwana1998.github.io/crud/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.1",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -13,7 +15,9 @@
     "concurrently": "^6.2.0",
     "json-server": "^0.16.3",
     "react": "^17.0.2",
+    "react-content-loader": "^6.0.3",
     "react-dom": "^17.0.2",
+    "react-loading-skeleton": "^2.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
@@ -21,9 +25,9 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "json-server": "json-server --watch db.json --port 3001",
     "start": "react-scripts start",
-    "start:dev": "concurrently \"npm run json-server\" \"npm start\"",
+    "json-server": "json-server --watch db.json --port 3001",
+    "start:dev": "concurrently \"npm start\" \"npm run json-server\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
