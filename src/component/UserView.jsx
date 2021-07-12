@@ -60,7 +60,7 @@ function UserView() {
   useEffect(() => {
     const loadUser = async () => {
       const res = await fetch(
-        `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users${id}`
+        `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users/${id}`
       );
       setUsers(await res.json());
     };
