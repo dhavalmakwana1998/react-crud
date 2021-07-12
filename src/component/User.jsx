@@ -26,6 +26,7 @@ import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import AddIcon from "@material-ui/icons/Add";
+import axios from "axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -54,25 +55,19 @@ function User() {
   const [rowsPerPage, setRowsPerPage] = useState(3);
 
   const loadUser = async () => {
-    const res = await fetch(
-      "https://my-json-server.typicode.com/dhavalmakwana1998/crud/users"
+    const res = await axios.get(
+      "https://my-json-server.typicode.com/dhavalmakwana1998/crud/users/"
     );
-    const users = await res.json();
-    setUsers(users.reverse());
+    setUsers(res.data.reverse());
   };
 
   const deleteUser = async (id) => {
     setOpen(false);
-    await fetch(
-      `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users${id}`,
-      {
-        method: "delete",
-      }
-    ).then(async (res) => {
-      console.log(await res);
-      setConfirmdDeleteId(null);
-      loadUser();
-    });
+    const res = await axios.delete(
+      `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users/${id}`
+    );
+    setConfirmdDeleteId(null);
+    loadUser();
   };
 
   const openConfirm = (deleteId) => {
@@ -199,9 +194,7 @@ function User() {
             <TableBody>
               {!users.length ? (
                 <TableRow>
-                  <TableCell rowSpan={7}>
-                    <h4 align="center">No records found</h4>
-                  </TableCell>
+                  <TableCell rowSpan={7}>No records found</TableCell>
                 </TableRow>
               ) : (
                 users

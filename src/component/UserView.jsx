@@ -18,6 +18,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
+import axios from "axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -41,15 +42,11 @@ function UserView() {
 
   const deleteUser = async (id) => {
     setOpen(false);
-    await fetch(
-      `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users${id}`,
-      {
-        method: "delete",
-      }
-    ).then(async (res) => {
-      setConfirmdDeleteId(null);
-      history.push("/");
-    });
+    const res = await axios.delete(
+      `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users${id}`
+    );
+    setConfirmdDeleteId(null);
+    history.push("/");
   };
 
   const openConfirm = (deleteId) => {
@@ -59,7 +56,7 @@ function UserView() {
 
   useEffect(() => {
     const loadUser = async () => {
-      const res = await fetch(
+      const res = await axios.get(
         `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users/${id}`
       );
       setUsers(await res.json());

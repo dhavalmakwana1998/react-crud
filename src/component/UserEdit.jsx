@@ -11,6 +11,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Container from "@material-ui/core/Container";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,24 +54,15 @@ function UserEdit() {
   };
   const onSubmitHandle = async (event) => {
     event.preventDefault();
-    await fetch(
-      `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users${id}`,
-      {
-        method: "put",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(users),
-      }
-    ).then(async (res) => {
-      history.push("/");
-    });
+    const res = axios.put(
+      `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users/${id}`
+    );
+    history.push("/");
   };
 
   useEffect(() => {
     const loadData = async (id) => {
-      const res = await fetch(
+      const res = await axios.get(
         `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users/${id}`
       );
       setUsers(await res.json());
