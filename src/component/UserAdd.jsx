@@ -11,7 +11,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Container from "@material-ui/core/Container";
-import Axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,9 +52,16 @@ function UserAdd() {
   };
   const onSubmitHandle = async (event) => {
     event.preventDefault();
-    const res = await Axios.post("http://localhost:3001/users", users);
-    console.log(res);
-    history.push("/");
+    await fetch("http://localhost:3001/users", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(users),
+    }).then(async (res) => {
+      history.push("/");
+    });
   };
   return (
     <>

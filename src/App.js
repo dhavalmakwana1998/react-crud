@@ -21,6 +21,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import User from "./component/User";
 import UserView from "./component/UserView";
 import UserAdd from "./component/UserAdd";
+import UserEdit from "./component/UserEdit";
 
 const drawerWidth = 240;
 
@@ -175,6 +176,7 @@ function App() {
               <Route exact path="/" component={User} />
               <Route exact path="/user" component={User} />
               <Route exact path="/user/add" component={UserAdd} />
+              <Route exact path="/user/edit/:id" component={UserEdit} />
               <Route exact path="/user/:id" component={UserView} />
               <Route
                 render={() => {

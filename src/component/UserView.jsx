@@ -10,7 +10,6 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import AddIcon from "@material-ui/icons/Add";
-import Axios from "axios";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -19,7 +18,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
-import { IconButton } from "@material-ui/core";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -41,16 +39,17 @@ function UserView() {
   const [open, setOpen] = useState(false);
   const [confirmDeleteId, setConfirmdDeleteId] = useState(null);
 
-  const loadUser = async () => {
-    const res = await Axios.get(`http://localhost:3001/users/${id}`);
-    setUsers(await res.data);
-  };
-
   const deleteUser = async (id) => {
     setOpen(false);
-    const res = await Axios.delete(`http://localhost:3001/users/${id}`);
-    setConfirmdDeleteId(null);
-    history.push("/");
+    await fetch(
+      `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users${id}`,
+      {
+        method: "delete",
+      }
+    ).then(async (res) => {
+      setConfirmdDeleteId(null);
+      history.push("/");
+    });
   };
 
   const openConfirm = (deleteId) => {
@@ -59,6 +58,12 @@ function UserView() {
   };
 
   useEffect(() => {
+    const loadUser = async () => {
+      const res = await fetch(
+        `https://my-json-server.typicode.com/dhavalmakwana1998/crud/users${id}`
+      );
+      setUsers(await res.json());
+    };
     loadUser();
   }, []);
 
