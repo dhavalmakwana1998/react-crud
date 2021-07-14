@@ -6,7 +6,7 @@ const SkeletonTable = (props) => (
     width={1000}
     height={550}
     viewBox="0 0 1000 550"
-    backgroundColor="#827f90"
+    backgroundColor="#d9d9d9"
     foregroundColor="#e3e3e3"
     {...props}
   >

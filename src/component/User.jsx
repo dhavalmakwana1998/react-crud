@@ -58,17 +58,17 @@ function User() {
 
   const loadUser = async () => {
     const res = await axios.get(packageJson.apiUrl);
-
     const user = res.data.reverse();
     setTimeout(() => {
       setUsers(user);
-    }, 3000);
+    }, 2000);
   };
 
   const deleteUser = async (id) => {
     setOpen(false);
     const res = await axios.delete(packageJson.apiUrl + id);
     setConfirmdDeleteId(null);
+    setUsers([]);
     loadUser();
   };
 
@@ -93,7 +93,7 @@ function User() {
   return (
     <>
       {users.length ? (
-        <div>
+        <>
           <Grid container>
             <Grid container spacing={3} style={{ marginBottom: "6px" }}>
               <Grid item xs={12} sm={6}>
@@ -232,20 +232,22 @@ function User() {
                   {!users.length ? (
                     <></>
                   ) : (
-                    <TablePagination
-                      rowsPerPageOptions={[3, 5, 7, 10, 15, 20]}
-                      count={users.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
+                    <TableRow>
+                      <TablePagination
+                        rowsPerPageOptions={[3, 5, 7, 10, 15, 20]}
+                        count={users.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                      />
+                    </TableRow>
                   )}
                 </TableBody>
               </Table>
             </TableContainer>
           </Grid>
-        </div>
+        </>
       ) : (
         <SkeletonTable />
       )}

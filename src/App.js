@@ -173,7 +173,7 @@ function App() {
           >
             <div className={classes.drawerHeader} />
             <Switch>
-              <Route exact path="/crud" component={User} />
+              <Route exact path="/" component={User} />
               <Route exact path="/user" component={User} />
               <Route exact path="/user/add" component={UserAdd} />
               <Route exact path="/user/edit/:id" component={UserEdit} />

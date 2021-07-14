@@ -67,11 +67,7 @@ function UserAdd() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box align="right">
-              <Link
-                onClicl={() => {
-                  history.goBack();
-                }}
-              >
+              <Link to={"/user"}>
                 <Button
                   color="secondary"
                   variant="contained"

@@ -41,16 +41,6 @@
       "id": 4
     },
     {
-      "name": "Rasilaben Rameshbhai Makvana",
-      "username": "rr",
-      "email": "dr",
-      "phone": "6356525696",
-      "website": "ola.org",
-      "city": "Amreli",
-      "bio": "BBB",
-      "id": 5
-    },
-    {
       "name": "Milan",
       "username": "mak",
       "email": "tesr",
@@ -59,6 +49,26 @@
       "city": "Amreli",
       "bio": "Test",
       "id": 6
+    },
+    {
+      "name": "prakash R makwana",
+      "username": "pr",
+      "email": "P@gmail",
+      "phone": "9925762801",
+      "website": "p.com",
+      "city": "Una",
+      "bio": "Bio",
+      "id": 7
+    },
+    {
+      "name": "Praksh",
+      "username": "pr",
+      "email": "P@gmail",
+      "phone": "9925762801",
+      "website": "p,com",
+      "city": "Timbi",
+      "bio": "Bio",
+      "id": 9
     }
   ]
 }

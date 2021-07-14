@@ -56,7 +56,7 @@ function UserEdit() {
   };
   const onSubmitHandle = async (event) => {
     event.preventDefault();
-    await axios.put(packageJson.apiUrl, users);
+    await axios.put(packageJson.apiUrl + id, users);
     history.push("/user");
   };
 
@@ -77,11 +77,7 @@ function UserEdit() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Box align="right">
-                <Link
-                  onClick={() => {
-                    history.goBack();
-                  }}
-                >
+                <Link to={"/user"}>
                   <Button
                     color="secondary"
                     variant="contained"
