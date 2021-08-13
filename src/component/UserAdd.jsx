@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
@@ -13,7 +13,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 import packageJson from "../../package.json";
-import Skeleton from "react-loading-skeleton";
+
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,9 +56,41 @@ function UserAdd() {
   };
   const onSubmitHandle = async (event) => {
     event.preventDefault();
+
     const res = await axios.post(packageJson.apiUrl, users);
-    history.push("/user");
+    if (res) {
+      history.push("/user");
+    }
   };
+
+  useEffect(() => {
+    // custom rule will have name 'isPasswordMatch'
+    ValidatorForm.addValidationRule("isNaN", (value) => {
+      if (isNaN(value)) {
+        return false;
+      }
+      return true;
+    });
+    ValidatorForm.addValidationRule("isNum", (value) => {
+      if (isNaN(value)) {
+        return true;
+      }
+      return false;
+    });
+    ValidatorForm.addValidationRule("numLimit", (value) => {
+      if (value.length < 10 || value.length > 10) {
+        return false;
+      }
+      return true;
+    });
+
+    return () => {
+      ValidatorForm.removeValidationRule("isNaN");
+      ValidatorForm.removeValidationRule("isNum");
+      ValidatorForm.removeValidationRule("numLimit");
+    };
+  }, []);
+
   return (
     <>
       <div className="container">
@@ -86,92 +119,110 @@ function UserAdd() {
               <AccountCircle />
             </Avatar>
             <Typography>User Add</Typography>
-            <form className={classes.form} onSubmit={onSubmitHandle}>
+            <ValidatorForm onSubmit={onSubmitHandle}>
+              {/* <form className={classes.form} onSubmit={onSubmitHandle}> */}
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <TextValidator
                     name="name"
-                    value={users.name}
                     variant="outlined"
-                    required
                     fullWidth
                     id="name"
+                    value={users.name}
                     onChange={onInputChange}
                     label="Full Name"
                     autoFocus
+                    validators={["required"]}
+                    errorMessages={["This field is required"]}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <TextValidator
                     variant="outlined"
-                    required
                     fullWidth
                     id="username"
                     label="Username"
                     name="username"
                     value={users.username}
                     onChange={onInputChange}
+                    validators={["required"]}
+                    errorMessages={["This field is required"]}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <TextValidator
                     variant="outlined"
-                    required
                     fullWidth
                     id="email"
                     label="Email Address"
                     name="email"
+                    autoComplete="email"
                     value={users.email}
                     onChange={onInputChange}
-                    autoComplete="email"
+                    validators={["required", "isEmail"]}
+                    errorMessages={[
+                      "This field is required",
+                      "email is not valid'",
+                    ]}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <TextValidator
                     variant="outlined"
-                    required
                     fullWidth
                     name="phone"
-                    value={users.phone}
-                    onChange={onInputChange}
                     label="Phone number"
                     id="phone"
+                    value={users.phone}
+                    onChange={onInputChange}
+                    validators={["required", "isNaN", "numLimit"]}
+                    errorMessages={[
+                      "This field is required",
+                      "Please enter number",
+                      "Number must be 10 character",
+                    ]}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <TextValidator
                     variant="outlined"
-                    required
                     fullWidth
                     name="website"
-                    value={users.website}
-                    onChange={onInputChange}
                     label="Website"
                     id="website"
+                    validators={["required"]}
+                    errorMessages={["This field is required"]}
+                    value={users.website}
+                    onChange={onInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <TextValidator
                     variant="outlined"
-                    required
                     fullWidth
                     name="city"
-                    value={users.city}
-                    onChange={onInputChange}
                     label="City"
                     id="city"
+                    validators={["required", "isNum"]}
+                    errorMessages={[
+                      "This field is required",
+                      "Please enter valid data",
+                    ]}
+                    value={users.city}
+                    onChange={onInputChange}
                   />
                 </Grid>
                 <Grid item sm={12}>
-                  <TextField
+                  <TextValidator
                     id="bio"
                     label="Bio"
                     multiline
-                    required
                     fullWidth
                     name="bio"
                     rows={3}
                     variant="outlined"
+                    validators={["required"]}
+                    errorMessages={["This field is required"]}
                     value={users.bio}
                     onChange={onInputChange}
                   />
@@ -186,7 +237,8 @@ function UserAdd() {
               >
                 Add
               </Button>
-            </form>
+            </ValidatorForm>
+            {/* </form> */}
           </div>
         </Container>
       </div>
